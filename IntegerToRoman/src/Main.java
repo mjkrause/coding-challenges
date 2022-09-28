@@ -1,75 +1,114 @@
-import java.lang.reflect.Array;
 import java.util.HashMap;
-import java.util.Stack;
 
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("Hello world!");
+        fillPosition1();
+        fillPosition2();
+        fillPosition3();
+        fillPosition4();
 
-        romanNumbers();
+        int i;
+        String r;
 
-        int i = 29;
-        String r = integerToRoman(i);
-        //System.out.println(getLengthOfInteger(i));
+        i = 10;
+        r = integerToRoman(i);
+        System.out.println("Roman Number: " + r);
+
+        i = 3;
+        r = integerToRoman(i);
+        System.out.println("Roman Number: " + r);
+
+        i = 58;
+        r = integerToRoman(i);
+        System.out.println("Roman Number: " + r);
+
+        i = 1994;
+        r = integerToRoman(i);
         System.out.println("Roman Number: " + r);
 
     }
 
-    private static String integerToRoman(int i) {
-        String r = String.valueOf((Integer) i);
-        int numDigits = r.length() - 1;
-        System.out.println("String of input: " + r);
-        System.out.println("numDigits: " + numDigits);
-        System.out.println("charAt(0): " + r.charAt(numDigits));
+    private static String integerToRoman(int num) {
+        String r = String.valueOf((Integer) num);
+        int numDigits = getLengthOfInteger(num);
 
-        int num;
-        //Stack<Integer> tempStack = new Stack<>();
-        Stack<String> stack = new Stack<>();
-        //stack.push((Integer) 0);
+        System.out.println("numDigits: " + numDigits);
+
+        int number;
+        String romanNumber = "";
+        int position = numDigits - 1;
         int c = 0;
         while (c < numDigits) {
-            //tempStack.empty();
-            num = r.charAt(c);
-            if (num == 5) {
-                stack.push("V");
-            } else if (num > 5) {
-                stack.push("X");
-                num = num - 5;  // num is larger than 5, so we need to establish the remainder
-                getItoIV(num, stack, 0);
+            number = Integer.parseInt(Character.toString(r.charAt(c)));
 
+            if (position == 3 && number != 0) {
+                romanNumber = romanNumber.concat(getPosition4.get(number));
+            } else if (position == 2 && number != 0) {
+                romanNumber = romanNumber.concat(getPosition3.get(number));
+            } else if (position == 1 && number != 0) {
+                romanNumber = romanNumber.concat(getPosition2.get(number));
+            } else if (position == 0 && number != 0){
+                romanNumber = romanNumber.concat(getPosition1.get(number));
             }
 
             c++;
+            position--;
         }
 
-        return "XXIX";
+        return romanNumber;
     }
 
-    /**
-     * 
-     * @param i
-     * @param stack
-     * @return stack with roman number
-     */
-    private static Stack getItoIV(int i, Stack stack, int position) {
 
-        // Don't use a switch-construct here - it's too expensive!
-        if (position == 0) {
-            if (i == 4) {
-                stack.push("IV");
-            } else if (i == 3) {
-                stack.push("III");
-            } else if (i == 2) {
-                stack.push("II");
-            } else {
-                stack.push("I");
-            }
-        }
+    private static final HashMap<Integer, String> getPosition1 = new HashMap<>();
 
-        return stack;
+    private static void fillPosition1() {
+        getPosition1.put(1, "I");
+        getPosition1.put(2, "II");
+        getPosition1.put(3, "III");
+        getPosition1.put(4, "IV");
+        getPosition1.put(5, "V");
+        getPosition1.put(6, "VI");
+        getPosition1.put(7, "VII");
+        getPosition1.put(8, "VIII");
+        getPosition1.put(9, "IX");
     }
 
+    private static final HashMap<Integer, String> getPosition2 = new HashMap<>();
+
+    private static void fillPosition2() {
+        getPosition2.put(1, "X");
+        getPosition2.put(2, "XX");
+        getPosition2.put(3, "XXX");
+        getPosition2.put(4, "XL");
+        getPosition2.put(5, "L");
+        getPosition2.put(6, "LX");
+        getPosition2.put(7, "LXX");
+        getPosition2.put(8, "LXXX");
+        getPosition2.put(9, "XC");
+    }
+
+    private static final HashMap<Integer, String> getPosition3 = new HashMap<>();
+
+    private static void fillPosition3() {
+        getPosition3.put(1, "C");
+        getPosition3.put(2, "CC");
+        getPosition3.put(3, "CCC");
+        getPosition3.put(4, "CD");
+        getPosition3.put(5, "D");
+        getPosition3.put(6, "DC");
+        getPosition3.put(7, "DCC");
+        getPosition3.put(8, "DCCC");
+        getPosition3.put(9, "CM");
+    }
+
+    private static final HashMap<Integer, String> getPosition4 = new HashMap<>();
+
+    private static void fillPosition4() {
+        getPosition4.put(1, "M");
+        getPosition4.put(2, "MM");
+        getPosition4.put(3, "MMM");
+    }
 
     /**
      *
@@ -77,33 +116,15 @@ public class Main {
      * @return length: the length of number; e.g., if number = 29, it returns 2
      */
     private static int getLengthOfInteger(int number) {
-        int length = 0;
-        long temp = 1;
-        while (temp <= number) {
-            length++;
-            temp *= 10;
+
+        if (number > 999) {
+            return 4;
+        } else if (number > 99) {
+            return 3;
+        } else if (number > 9) {
+            return 2;
+        } else {
+            return 1;
         }
-        return length;
-    }
-
-//    private static final HashMap<int, String[]> positionMap = new HashMap<>();
-//
-//    private static void getPositionMap() {
-//        String one[] = {"I", "II", "III", "IV"};
-//        positionMap.put(1, one);
-//
-//        String ten[] = {"IX", "IIX", "IIIX", "IV"};
-//    }
-
-    private static final HashMap<Integer, String> aMap = new HashMap<>();
-
-    private static void romanNumbers() {
-        aMap.put(1, "I");
-        aMap.put(5, "V");
-        aMap.put(10, "X");
-        aMap.put(50, "L");
-        aMap.put(100, "C");
-        aMap.put(500, "D");
-        aMap.put(1000, "M");
     }
 }
